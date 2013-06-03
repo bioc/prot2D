@@ -1,0 +1,10 @@
+importFrom(stats,loess,predict,p.adjust)
+importFrom(st,studentt.stat,efront.stat,shrinkt.stat)
+importFrom(fdrtool,fdrtool)
+importFrom(limma,lmFit,eBayes)
+importFrom(samr,samr)
+import(Biobase)
+
+export(ES.prot,Norm.loess,RIplot,Sim.Prot.2D,efronT.Prot,modT.Prot,
+       samT.Prot,shrinkT.Prot,ttest.Prot)
+

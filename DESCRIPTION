@@ -1,0 +1,13 @@
+Package: prot2D
+Type: Package
+Title: Statistical Tools for volume data from 2D Gel Electrophoresis
+Version: 0.99.1
+Date: 2013-04-10
+Author: Sebastien Artigaud
+Maintainer: Sebastien Artigaud <sebastien.artigaud@gmx.com>
+Description: The purpose of this package is to analyze (i.e. Normalize and select significant spots) data issued from 2D GEl experiments
+Depends: R (>= 2.15),fdrtool,st,samr,Biobase,limma,Mulcom,impute,MASS
+Suggests: made4,affy
+License: GPL (>= 2)
+biocViews: Bioinformatics, DifferentialExpression, MultipleComparisons,
+        Proteomics

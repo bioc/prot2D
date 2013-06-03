@@ -1,0 +1,224 @@
+%\VignetteIndexEntry{prot2D}
+%\VignetteKeywords{prot2D}
+%\VignettePackage{prot2D}
+
+\documentclass[a4paper]{article}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[font={small,it}]{caption}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Rcode}[1]{{\texttt{#1}}}
+\newcommand{\Rparameter}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\title{prot2D : Statistical Tools for volume data from 2D Gel Electrophoresis}
+\author{
+        S\'ebastien Artigaud
+       \footnote{Laboratoire des Sciences de l'Environnement Marin, LEMAR UMR 6539, Universit\'e de Bretagne Occidentale,  Institut Universitaire Europ\'een de la Mer, 29280 Plouzan\'e, France}
+        }
+
+\title{\textsf{prot2D : Statistical Tools for volume data from 2D Gel Electrophoresis}}
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+This document briefly describes how to use the \Rpackage{prot2D} package. An R package designed to analyze (i.e. Normalize and select significant spots) data issued from 2D SDS PAGE experiments. \Rpackage{prot2D} provides a simple interface for analysing data from 2D gel experiments. Functions for normalization as well as selecting significant spots are provided. Furthermore, a function to simulates realistic 2D Gel volume data is also provided.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Input data for \Rpackage{prot2D}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Rpackage{prot2D} uses raw 2D volume data intensities as input, datasets must be exported from specialized Image Software in the form of a dataframe of volume data $X_{j,i}$ with gels $j$ as columns and spots $i$ as rows. Note that the name of columns should therefore corresponds to the names of the gels and the names of the rows to the name of the spots. The replicates for each condition should be ordered in the following columns (see Table 1). Furthermore, another dataframe is needed to describe the experiment with the names of gels as rownames and a single column giving the two level of condition for data. 
+\begin{table}
+\small
+\centering
+\caption{Example of input data for \Rpackage{prot2D} with 3 replicates gels in each condition}
+\smallskip
+\begin{tabular}{c|ccc|ccc}
+
+ & \multicolumn{3}{c|}{Replicates Condition 1} &\multicolumn{3}{c}{Replicates Condition 2}   \\
+   & $Gel1$  & $Gel2$  & $Gel3$ &
+  $Gel1'$ & $Gel2'$  & $Gel3'$ \\
+  \hline
+  $Spot_1$ &  $X_{1,1}$ & $X_{2,1}$ & $X_{3,1}$ &
+  $X_{1',1}$ & $X_{2',1}$ & $X_{3',1}$ \\
+  $Spot_2$ &  $X_{1,2}$ & $X_{2,2}$ & $X_{3,2}$ & 
+  $X_{1',2}$ & $X_{2',2}$ & $X_{3',2}$ \\
+  $Spot_i$ &  $X_{1,i}$ & $X_{2,i}$ & $X_{3,i}$ & 
+  $X_{1',i}$ & $X_{2',i}$ & $X_{3',i}$\\
+
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Getting started}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+To load the \Rpackage{prot2D} package into your R envirnoment type:
+<<>>=
+library(prot2D)
+@
+In this tutorial we will be using the \Rcode{pecten} dataset obtained from a 2-DE experiment performed on proteins from the gills of \emph{Pecten maximus} subjected to a temperature challenge. 766 spots were identified with 6 replicates per condition, therefore the dataset is a dataframe of 766 rows and 12 columns (for details, see Artigaud et al., 2013). \Rcode{pecten.fac} describe the data by giving the names of the gels (as rownames) and the condition for the temperature challenge (15C = control  vs 25C) in the "Condition" column, load by typing:
+<<>>=
+data(pecten)
+data(pecten.fac)
+@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\Rpackage{prot2D} workflow}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Vizualize and Normalize volume data}
+\subsubsection*{Vizualization}
+Dudoit et al. (2002) proposed a method for the visualization of artifacts in microarray datasets, called the MA-plot, which was transposed for proteomics data as the Ratio-Intensity plot (Meunier et al., 2005; R-I plot). It consists in plotting the intensity $log_2$-ratio (R) against mean $log_{10}$ intensity (I):
+\begin{equation}
+R = log_2\frac{mean(V_{Cond2})}{mean(V_{Cond1})}
+\end{equation}
+The intensity (I) is the log10 of the mean of volume data in condition 2 by the mean of volume data in condition 1 : 
+\begin{equation}
+I = log_{10}(mean(V_{Cond2})\times mean(V_{Cond1}))
+\end{equation}
+Where $V_{Cond1}$ and $V_{Cond2}$ are spot volumes for conditions 1 and 2, respectively.
+In \Rpackage{prot2D}, R-I plot can be easily displayed with \Rfunction{RIplot}:
+<<>>=
+RIplot(pecten, n1=6, n2=6)
+@
+\Rfunction{RIplot} requires data supplied as a dataframe or a matrix as well as the number of replicates for each conditions.
+\subsubsection*{Normalization}
+2D Gel Volume data must be normalized in order to remove systemic variation prior to data analysis. The loess method is a robust smoother based on local polynomial regression, raw spots volumes data are corrected by
+\begin{equation}
+V'_{Cond1} = \frac{V_{Cond1}}{\sqrt{2^{-loess fit}}}
+\end{equation}
+\begin{equation}
+V'_{Cond2} = V_{Cond2}\times\sqrt{2^{-loess fit}}
+\end{equation}
+Where $loess fit$ are values fitted by the loess method; and $V'_{Cond1}$ and $V'_{Cond2}$ are corrected spots volumes in condition 1 and 2, respectively.
+\Rfunction{Norm.loess} allows to normalize data based on the loess method, an R-I plot showing the normalization can also be displayed (fig. 1). The smooth is controlled by the \Rcode{span} parameter, which sets the proportion of the total dataset to be used in each window for local fitting. By default a value of 0.75 is used, as it was found to be suitable for 2-DE volume data (Artigaud et al., 2013).
+<<>>=
+pecten.norm <- Norm.loess(pecten, n1=6,n2=6,plot=TRUE,span=0.75)
+@
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=90mm]{images/RIplot.png}
+\caption{Ratio-Intensity plot showing LOESS normalization }
+\label{fig:RIplot}
+\end{figure}
+<<>>=
+
+@
+
+\subsection{Coerce data into an ExpressionSet}
+Prior to analysis for finding differentially expressed proteins, data must be coerced into an \Rfunction{ExpressionSet}. This can be done easily with \Rfunction{ES.prot}, which requires a matrix of normalized volume data, the number of replicates in each condition and a dataframe giving the condition for the experiment.
+<<>>=
+ES.p <- ES.prot(pecten.norm, n1=6, n2=6, f=pecten.fac)
+@
+The matrix of spots intensities (i.e. Volume) is log2 transformed and stored in the \Rcode{assayData} slot of the \Rcode{ExpressionSet}. Furthermore, the log2-ratio is computed and stored in the \Rcode{featureData} slot.
+\subsection{Find differentially expressed proteins}
+As described in Artigaud et al (2013) \Rpackage{prot2D} provide functions adapted from microarray analysis (from the \Rpackage{st, samr, limma, fdrtool} package). 2-DE experiments analysis require a variant of the t-statistic that is suitable for high-dimensional data and large-scale multiple testing. For this purpose, in the last few years, various test procedures have been suggested.
+\Rpackage{prot2D} provides:
+\begin{itemize}
+\item
+the classical Student's t-test (in \Rfunction{ttest.Prot} function)
+\item
+two tests especially modified for micro-array analysis : Efron's t-test (2001; \Rfunction{efronT.Prot} function) and the modified t-test used in Significance Analysis for Microarray (Tusher et al, 2001; \Rfunction{samT.Prot} function).
+\item
+two methods that take advantage of hierarchical Bayes methods for estimation of the variance across genes: the "moderate t-test" from Smyth (2004; \Rfunction{modT.Prot} function) and the "Shrinkage t" statistic test from Opgen-Rhein and Strimmer (2007; \Rfunction{shrinkT.Prot} function).
+\end{itemize}
+As statistical tests allowing the identification of differentially expressed proteins must take into account a correction for multiple tests in order to avoid false conclusions. \Rpackage{prot2D} also provide different methods to estimate the False Discovery Rate :
+\begin{itemize}
+\item
+the classical FDR estimator of Benjamini and Hochberg (1995).
+\item
+the local FDR estimator of Strimmer (2008).
+\item
+the "robust FDR" estimator of Pounds and Cheng (2006).
+\end{itemize}
+\Rfunction{ttest.Prot} function, \Rfunction{modT.Prot} function, \Rfunction{samT.Prot} function, \Rfunction{efronT.Prot} function or \Rfunction{shrinkT.Prot} function can be used to find differentially expressed proteins and the different FDR mode of calculation are implemented with the  \Rparameter{method.fdr} argument. However, the moderate t-test with the FDR correction of Benjamini and Hochberg was find to be the best combination in terms of sensitivity and specificity. Thus, users are advised to use this combination by typing :
+<<>>=
+ES.diff <- modT.Prot(ES.p, plot=TRUE, fdr.thr=0.1, 
+                     method.fdr="BH" )
+@
+The function returns an \Rfunction{ExpressionSet} containing only the spots declared as significant. A plot can also be generated to vizualize the FDR cut-off. Additionally, it can be usefull to select only the spots with an absolute ratio greater than 2, as they are often considered as the most biologically relevant proteins, this can be done by adding the command \Rparameter{Fold2=T}. The names of the selected spots can be retrieved with :
+<<>>=
+featureNames(ES.diff)
+@
+Displaying fold change (as log2(ratio)) for selected spots
+<<>>=
+head(fData(ES.diff))
+@
+Volume normalized data for selected spots
+<<>>=
+head(exprs(ES.diff))
+@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Simulation of 2D Volume data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In order to compare FDR and the responses of the different tests as well as the influence of the number of replicates, simulated data ca be used. \Rfunction{Sim.Prot.2D} simulates realistic 2D Gel volume data, based on parameters estimate from real dataset. Volume data are computed following these steps (see Smyth, 2004 and Artigaud et al., 2013 for details) :
+\begin{itemize}
+\item
+Log2 mean volumes from data are computed for each spot.
+\item
+Means are used as input parameters in order to simulate a normal distribution (with no differential expression between conditions) for each spot with standard deviations computed as described by Smyth (2004).
+\item
+A define proportion \Rparameter{p0} of the spots are randomly picked for introducing differential expression in both conditions (\Rparameter{p0}/2 in each condition).
+\end{itemize}
+The \Rfunction{Sim.Prot.2D} returns an \Rfunction{ExpressionSet} of simulated volume data (log2 transformed) with 2 conditions ("Cond1" and "Cond2" in \Rfunction{phenoData}) slot of the \Rfunction{ExpressionSet}.The spots differentially generated can be retrieve with \Rfunction{notes}. Simulate data based on "pecten"
+<<>>=
+Sim.data <- Sim.Prot.2D(data=pecten, nsp=700,
+                        nr=10, p0=0.1, s2_0=0.2, d0=3)
+@
+Compare different methods for finding differentially expressed proteins
+<<>>=
+res.stud <- ttest.Prot(Sim.data, fdr.thr=0.1, plot=FALSE)
+res.mo <- modT.Prot(Sim.data, fdr.thr=0.1, plot=FALSE)
+@
+Names of the spots selected by student's t-test with an FDR of 0.1
+<<>>=
+featureNames(res.stud) 
+@
+Names of the spots selected by modT-test with an FDR of 0.1
+<<>>=
+featureNames(res.mo) 
+@
+Names of the differentially generated spots
+<<>>=
+notes(Sim.data)$SpotSig 
+@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Session Info}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<>>=
+sessionInfo()
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\indent Artigaud, S., Gauthier, O. \& Pichereau, V. (2013) "Identifying differentially expressed proteins in 2-DE experiments: Inputs from transcriptomics statistical tools." Submitted
+\par
+Benjamini, Y. \& Hochberg, Y. (1995) "Controlling the false discovery rate: a practical and powerful approach to multiple testing" Journal of the Royal Statistical Society. Series B. Methodological.: 289-300.
+\par
+Dudoit, S., Yang, Y.H., Callow, M.J., \& Speed, T.P. (2002) "Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments" Statistica Sinica, vol. 12: 111-139.
+\par
+Efron, B., Tibshirani, R., Storey, J.D., \& Tusher, V. (2001) "Empirical Bayes Analysis of a Microarray Experiment" Journal of the American Statistical Association, vol. 96 (456): 1151-1160.
+\par
+Meunier, B., Bouley, J., Piec, I., Bernard, C., Picard, B., \& Hocquette, J.-F. (2005) "Data analysis methods for detection of differential protein expression in two-dimensional gel electrophoresis" Analytical Biochemistry, vol. 340 (2): 226-230.
+\par
+Opgen-Rhein, R. \& Strimmer, K. (2007) "Accurate Ranking of Differentially Expressed Genes by a Distribution-Free Shrinkage Approach" Statistical Applications in Genetics and Molecular Biology, vol. 6 (1).
+\par
+Pounds, S. \& Cheng, C. (2006) "Robust estimation of the false discovery rate" Bioinformatics, vol. 22 (16): 1979-1987.
+\par
+Smyth, G.K. (2004) "Linear models and empirical bayes methods for assessing differential expression in microarray experiments." Statistical Applications in Genetics and Molecular Biology, vol. 3: Article3.
+\par
+Strimmer, K. (2008) "A unified approach to false discovery rate estimation." BMC Bioinformatics, vol. 9: 303.
+\par
+Tusher, V.G., Tibshirani, R., \& Chu, G. (2001) "Significance analysis of microarrays applied to the ionizing radiation response" Proceedings of the National Academy of Sciences of the United States of America, vol. 98 (9): 5116-5121.
+
+
+
+\end{document}

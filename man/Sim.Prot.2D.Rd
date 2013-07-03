@@ -11,7 +11,7 @@ Sim.Prot.2D(data, nsp=nrow(data), nr=10, p0=0.1, s2_0=0.2 ,d0=3)
 }
 \arguments{
   \item{data}{
-either a dataframe or a matrix of 2D Gel Volume data. Usually the output of \code{\link{Norm.loess}}.
+either a dataframe or a matrix of 2D Gel Volume data. Usually the output of \code{\link{Norm.qt}}.
 }
   \item{nsp}{
 an integer. Number of spots (i.e. rows) to generate (should be equal or less than the number of rows of data).
@@ -56,10 +56,12 @@ Sebastien Artigaud
 \code{\link{variousT.Prot}}, 
 }
 \examples{
-data(pecten)
-
 #Simulate data based on "pecten"
-Sim.data <- Sim.Prot.2D(data=pecten, nsp=700, nr=10, p0=0.1, s2_0=0.2, d0=3)
+data(pecten)
+data(pecten.fac)
+
+pecten.norm <- Norm.qt(pecten, n1=6, n2=6, plot=FALSE)
+Sim.data <- Sim.Prot.2D(data=pecten.norm, nsp=700, nr=10, p0=0.1, s2_0=0.2, d0=3)
 
 #Compare different methods for finding diffenrentially expressed proteins
 res.stud <- ttest.Prot(Sim.data, fdr.thr=0.1, plot=FALSE)

@@ -24,11 +24,11 @@ efronT.Prot(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH")
 shrinkT.Prot(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH", var.equal = F)
 }
 \arguments{
-  \item{data}{ an \code{\link{ExpressionSet}} of log2 transformed volume data. Usually as returned by \code{\link{ES.prot}}.
+  \item{data}{ an \code{\link{ExpressionSet}} of volume data. Usually as returned by \code{\link{ES.prot}}.
 }
   \item{fdr.thr}{threshold value for the FDR (defaults to 0.1). 
 }
-  \item{method.fdr}{method for FDR estimator. 3 methods are implemented :"BH" for the Classical FDR from Benjamini & Hochberg, "Strimmer" for the local FDR and "Pounds" for robust FDR (see references for details).
+  \item{method.fdr}{method for FDR estimator. 4 methods are implemented :"BH" for the Classical FDR from Benjamini & Hochberg, "Strimmer", "Storey" and "Pounds" (see references for details).
 }
   \item{Fold2}{logical. If true only spots with an absolute ratio of 2 are selected.
 }
@@ -45,8 +45,9 @@ These functions provides:\cr
  - two methods that take advantage of hierarchical Bayes methods for estimation of the variance across genes: the moderate t-test from Smyth (using \code{\link{limma}}; see Smyth, 2004) and the "Shrinkage t" statistic test from Opgen-Rhein & Strimmer (adapted from \code{\link{shrinkcat.stat}}; see Opgen-Rhein & Strimmer, 2007). \cr
 As statistical tests allowing the identification of differentially expressed proteins must take into account a correction for multiple tests in order to avoid false conclusions. These functions also provides different methods to estimate the False Discovery Rate :\cr
 - the classical FDR estimator of Benjamini & Hochberg (using \code{\link{p.adjust}}; see Benjamini & Hochberg, 1995)\cr
-- the local FDR estimator of Strimmer (using \code{\link{fdrtool}}; see Strimmer 2008)\cr
-- the "robust FDR" estimator of Pounds & Cheng (implemented in \code{\link{robust.fdr}} for the \code{\link{prot2D}} package; see Pounds & Cheng, 2006).
+- the Fdr estimator of Strimmer (based on local fdr calculation) (using \code{\link{fdrtool}}; see Strimmer 2008)\cr
+- the "robust FDR" estimator of Pounds & Cheng (implemented in \code{\link{robust.fdr}} for the \code{\link{prot2D}} package; see Pounds & Cheng, 2006)\cr
+- Fdr method of Storey and Tibshirani (2003), also known as "q-values" (using \code{\link{qvalue}}.
 }
 \value{
 returns an \code{\link{ExpressionSet}} containing only the significant spots (see Examples).
@@ -72,14 +73,15 @@ Sebastien Artigaud
 }
 
 \seealso{
-\code{\link{Norm.loess}},\code{\link{ES.prot}},\code{\link{fdrtool}},\code{\link{limma}},
+\code{\link{Norm.qt}},\code{\link{ES.prot}},\code{\link{fdrtool}},\code{\link{limma}},
 \code{\link{samr}},\code{\link{studentt.stat}},\code{\link{shrinkt.stat}},
-\code{\link{efront.stat}}
+\code{\link{efront.stat}},\code{\link{qvalue}}
 }
 \examples{
 data(pecten)
 data(pecten.fac)
-pecten.norm <- Norm.loess(pecten, n1=6, n2=6, plot=TRUE, span=0.75) #Loess normalization of the data
+
+pecten.norm <- Norm.qt(pecten, n1=6, n2=6, plot=TRUE) #Quantiles normalization of the data
 ES.p <- ES.prot(pecten.norm, n1=6, n2=6, f=pecten.fac)
 ES.diff <- modT.Prot(ES.p, fdr.thr=0.1, plot=TRUE)
 featureNames(ES.diff) # Names of the spots selected for a moderated t-test with a fdr of 0.1

@@ -8,4 +8,3 @@ import(qvalue)
 
 export(ES.prot,Norm.qt,Norm.vsn,RIplot,Sim.Prot.2D,efronT.Prot,modT.Prot,
        samT.Prot,shrinkT.Prot,ttest.Prot,robust.fdr)
-

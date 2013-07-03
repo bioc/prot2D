@@ -23,24 +23,24 @@ a dataframe giving the factors for data. \code{f} dataframe should have only 1 c
 }
 }
 \details{
-Usually \code{data} matrix should be the output of \code{\link{Norm.loess}}. In \code{data} the columns (i.e. Gels) must be ordered with replicates from condition 1 before those from condition 2.
+Usually \code{data} matrix should be the output of \code{\link{Norm.qt}} and therefore is log2-transformed. In \code{data} the columns (i.e. Gels) must be ordered with replicates from condition 1 before those from condition 2.
 }
 \value{
-The function returns an \code{\link{ExpressionSet}}. The matrix of spots intensities (i.e. Volume) is log2 transformed and stored in the \code{\link{assayData}} slot of the \code{\link{ExpressionSet}} and can be retrieved with \code{\link{exprs}}. In the \code{\link{featureData}} slot the log2-ratio is computed and can be retrieved with \code{\link{fData}}.
+The function returns an \code{\link{ExpressionSet}}. The matrix of spots intensities (i.e. Volume) is stored in the \code{\link{assayData}} slot of the \code{\link{ExpressionSet}} and can be retrieved with \code{\link{exprs}}. In the \code{\link{featureData}} slot the log2-ratio is computed and can be retrieved with \code{\link{fData}}.
 }
 \author{
 Sebastien Artigaud
 \email{sebastien.artigaud@gmx.com}
 }
 \seealso{
-\code{\link{Norm.loess}},
-\code{\link{ExpressionSet}}
+\code{\link{Norm.qt}},\code{\link{Norm.vsn}},\code{\link{ExpressionSet}}
 
 }
 \examples{
 data(pecten)
 data(pecten.fac)
-pecten.norm <- Norm.loess(pecten, n1=6, n2=6, plot=TRUE, span=0.75) #Loess normalization of the data
+
+pecten.norm <- Norm.qt(pecten, n1=6, n2=6, plot=TRUE) #Quantiles normalization of the data
 ES.p <- ES.prot(pecten.norm, n1=6, n2=6, f=pecten.fac)
-}
+head(exprs(ES.p))}
 \keyword{prot2D}

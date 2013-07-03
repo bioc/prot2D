@@ -90,22 +90,15 @@ RIplot(pecten, n1=6, n2=6)
 @
 \Rfunction{RIplot} requires data supplied as a dataframe or a matrix as well as the number of replicates for each conditions.
 \subsubsection*{Normalization}
-2D Gel Volume data must be normalized in order to remove systemic variation prior to data analysis. The loess method is a robust smoother based on local polynomial regression, raw spots volumes data are corrected by
-\begin{equation}
-V'_{Cond1} = \frac{V_{Cond1}}{\sqrt{2^{-loess fit}}}
-\end{equation}
-\begin{equation}
-V'_{Cond2} = V_{Cond2}\times\sqrt{2^{-loess fit}}
-\end{equation}
-Where $loess fit$ are values fitted by the loess method; and $V'_{Cond1}$ and $V'_{Cond2}$ are corrected spots volumes in condition 1 and 2, respectively.
-\Rfunction{Norm.loess} allows to normalize data based on the loess method, an R-I plot showing the normalization can also be displayed (fig. 1). The smooth is controlled by the \Rcode{span} parameter, which sets the proportion of the total dataset to be used in each window for local fitting. By default a value of 0.75 is used, as it was found to be suitable for 2-DE volume data (Artigaud et al., 2013).
+2D Gel Volume data must be normalized in order to remove systemic variation prior to data analysis. Two widely used methods are provided, the "Variance Stabilizing Normalization" (vsn)  and the "Quantiles, Normalization". The principle of the "quantiles normalization" is to set each quantile of each column (i.e. the spots volume data of each gels)  to the mean of that quantile across gels. The intention is to make all the normalized columns have the same empirical distribution. Whereas the vsn methods relies on a transformation \emph{h}, of the parametric form \emph{h(x)= arsinh(a+bx)}  (Huber et al., 2002). The parameters of \emph{h} together with those of the calibration between experiments are estimated with a robust variant of maximum-likelihood estimation. Both methods recentered the data around a zero log ratio, nevertheless for low values of intensities the vsn normalized data seems to be less efficient in order to recentered the cloud of points. Users are thus advised to use the quantiles normalization via a call to \Rfunction{Norm.qt}.
+
 <<>>=
-pecten.norm <- Norm.loess(pecten, n1=6,n2=6,plot=TRUE,span=0.75)
+pecten.norm <- Norm.qt(pecten, n1=6, n2=6, plot=TRUE)
 @
 \begin{figure}[htb!]
 \centering
 \includegraphics[width=90mm]{images/RIplot.png}
-\caption{Ratio-Intensity plot showing LOESS normalization }
+\caption{Ratio-Intensity plot showing Quantiles normalization }
 \label{fig:RIplot}
 \end{figure}
 <<>>=
@@ -206,6 +199,8 @@ Benjamini, Y. \& Hochberg, Y. (1995) "Controlling the false discovery rate: a pr
 Dudoit, S., Yang, Y.H., Callow, M.J., \& Speed, T.P. (2002) "Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments" Statistica Sinica, vol. 12: 111-139.
 \par
 Efron, B., Tibshirani, R., Storey, J.D., \& Tusher, V. (2001) "Empirical Bayes Analysis of a Microarray Experiment" Journal of the American Statistical Association, vol. 96 (456): 1151-1160.
+\par
+Huber, W., Heydebreck, von, A., Sultmann, H., Poustka, A., \& Vingron, M. (2002) "Variance stabilization applied to microarray data calibration and to the quantification of differential expression" Bioinformatics, vol. 18 (Suppl 1): S96-S104.}
 \par
 Meunier, B., Bouley, J., Piec, I., Bernard, C., Picard, B., \& Hocquette, J.-F. (2005) "Data analysis methods for detection of differential protein expression in two-dimensional gel electrophoresis" Analytical Biochemistry, vol. 340 (2): 226-230.
 \par

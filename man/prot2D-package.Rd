@@ -10,7 +10,7 @@ and select significant spots) data issued from 2D GEl experiments
 \details{
 This package provides a simple interface for analysing data from 2D gel experiments. Functions for performing normalization as well as selecting significant spots are provided. All the functions for selecting significant spots are adapted from functions for microarray analysis provided by Bioconductor and CRAN, and all credits go to the authors of these functions. For analyzing 2D gel experiments data, users are advised to follow theses steps :
 \enumerate{
-\item{Normalize data using \code{\link[prot2D]{Norm.loess}}}
+\item{Normalize data using \code{\link[prot2D]{Norm.qt}}}
 \item{Coerce data into an  \code{\link[Biobase]{ExpressionSet}} using \code{\link[prot2D]{ES.prot}}}
 \item{Use normalized data to find differentially expressed proteins with FDR-controled functions: \code{\link[prot2D]{modT.Prot}} was find to be the more efficient for 2-DE (see Artigaud et al , 2013) but other functions are provided (\code{\link{ttest.Prot}},\code{\link{samT.Prot}},\code{\link{efronT.Prot}}, ,\code{\link{shrinkT.Prot}}) }
 }
@@ -33,7 +33,8 @@ Sebastien Artigaud
 \examples{
 data(pecten)
 data(pecten.fac)
-pecten.norm <- Norm.loess(pecten, n1=6, n2=6, plot=TRUE, span=0.75) #Loess normalization of the data
+
+pecten.norm <- Norm.qt(pecten, n1=6, n2=6, plot=TRUE) #Quantiles normalization of the data
 ES.p <- ES.prot(pecten.norm, n1=6, n2=6, f=pecten.fac)
 x <- modT.Prot(ES.p, fdr.thr=0.1, plot=TRUE)
 featureNames(x) # Names of the spots selected for a moderated t-test with a fdr of 0.1

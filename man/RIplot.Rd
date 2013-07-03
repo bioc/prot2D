@@ -46,18 +46,12 @@ Sebastien Artigaud
 \email{sebastien.artigaud@gmx.com}
 }
 \seealso{
-\code{\link{Norm.loess}}
+\code{\link{Norm.qt}},\code{\link{Norm.vsn}}
 }
 \examples{
-# Vizualize effects of loess normalization
-par(mfrow=c(2,1))
-## Without Normalization
 data(pecten)
+
 RIplot(pecten, 6, 6, main="Without Normalization")
-## With loess normalization (span=0.75)
-pecten.norm <- Norm.loess(pecten, 6, 6, plot=FALSE, span=0.75)
-RIplot(pecten.norm, 6, 6, main="Loess Normalization")
-par(mfrow=c(1,1))
 }
 
 \keyword{prot2D}

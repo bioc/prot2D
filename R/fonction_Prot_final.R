@@ -255,7 +255,7 @@ modT.Prot <-
       names(fdr.lim$pval)<-featureNames(data)
       names.sig.spot<- names(fdr.lim$pval[fdr.lim$qval <fdr.thr])
       if(plot){
-        plot(fdr.lim$pval,fdr.lim$lfdr, xlab="p-value",ylab="Fdr")
+        plot(fdr.lim$pval,fdr.lim$qval, xlab="p-value",ylab="Fdr")
         abline(h=fdr.thr)
       }
     }
@@ -342,7 +342,7 @@ samT.Prot <-
       names(fdr.sam$pval)<-featureNames(data)
       names.sig.spot<- names(fdr.sam$pval[fdr.sam$qval <fdr.thr])
       if(plot){
-        plot(fdr.sam$pval,fdr.sam$lfdr, xlab="p-value",ylab="Fdr")
+        plot(fdr.sam$pval,fdr.sam$qval, xlab="p-value",ylab="Fdr")
         abline(h=fdr.thr)
       }
     }
@@ -424,7 +424,7 @@ efronT.Prot <-
       names(fdr.ef$pval)<-featureNames(data)
       names.sig.spot<- names(fdr.ef$pval[fdr.ef$qval <fdr.thr])
       if(plot){
-        plot(fdr.ef$pval,fdr.ef$lfdr, xlab="p-value",ylab="Fdr")
+        plot(fdr.ef$pval,fdr.ef$qval, xlab="p-value",ylab="Fdr")
         abline(h=fdr.thr)
       }
     }
@@ -508,7 +508,7 @@ shrinkT.Prot <-
       names(fdr.shrt$pval)<-featureNames(data)
       names.sig.spot<- names(fdr.shrt$pval[fdr.shrt$qval <fdr.thr])
       if(plot){
-        plot(fdr.shrt$pval,fdr.shrt$lfdr, xlab="p-value",ylab="Fdr")
+        plot(fdr.shrt$pval,fdr.shrt$qval, xlab="p-value",ylab="Fdr")
         abline(h=fdr.thr)
       }
     }

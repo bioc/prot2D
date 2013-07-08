@@ -200,7 +200,7 @@ Dudoit, S., Yang, Y.H., Callow, M.J., \& Speed, T.P. (2002) "Statistical methods
 \par
 Efron, B., Tibshirani, R., Storey, J.D., \& Tusher, V. (2001) "Empirical Bayes Analysis of a Microarray Experiment" Journal of the American Statistical Association, vol. 96 (456): 1151-1160.
 \par
-Huber, W., Heydebreck, von, A., Sultmann, H., Poustka, A., \& Vingron, M. (2002) "Variance stabilization applied to microarray data calibration and to the quantification of differential expression" Bioinformatics, vol. 18 (Suppl 1): S96-S104.}
+Huber, W., Heydebreck, von, A., Sultmann, H., Poustka, A., \& Vingron, M. (2002) "Variance stabilization applied to microarray data calibration and to the quantification of differential expression" Bioinformatics, vol. 18 (Suppl 1): S96-S104.
 \par
 Meunier, B., Bouley, J., Piec, I., Bernard, C., Picard, B., \& Hocquette, J.-F. (2005) "Data analysis methods for detection of differential protein expression in two-dimensional gel electrophoresis" Analytical Biochemistry, vol. 340 (2): 226-230.
 \par

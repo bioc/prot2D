@@ -223,7 +223,7 @@ ttest.Prot <-
 
 #### Smyth's Moderate T-test#####
 modT.Prot <-
-  function(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH"){
+  function(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH", col=1){
     if(class(data)[1]!="ExpressionSet"){
       warning(gettextf("'%s' is not an ExpressionSet",
                        as.character(match.call()$data),domain=NA))  
@@ -236,14 +236,14 @@ modT.Prot <-
     
     require(fdrtool)
     require(limma)
-    L=t(pData(data)[,1])
+    L=t(pData(data)[,col])
     L=as.integer(as.factor(L))
     des =cbind(rep(1, length(L)), L)
-    fit <- lmFit(exprs(data), design=des,method="robust",maxit=1000)
-    fit <- eBayes(fit)
-    fdr.lim <- fdrtool(fit$t[,2], verbose=F, plot=F)
+    fit <- lmFit(data, design=des,method="robust",maxit=1000)
+    fit <- eBayes(fit, robust=T)
+    
     if(method.fdr=="Pounds"){
-      rfdr <- robust.fdr(p=fdr.lim$pval,sides=1,discrete=T)
+      rfdr <- robust.fdr(p=fit$p.value[,2],sides=1,discrete=T)
       names(rfdr$p)<-featureNames(data)
       names.sig.spot<- names(rfdr$p[rfdr$fdr <fdr.thr])
       if(plot){
@@ -252,28 +252,29 @@ modT.Prot <-
       }
     }
     if(method.fdr=="Strimmer"){
+      fdr.lim <- fdrtool(fit$p.value[,2], verbose=F, plot=F, statistic="pvalue")
       names(fdr.lim$pval)<-featureNames(data)
       names.sig.spot<- names(fdr.lim$pval[fdr.lim$qval <fdr.thr])
       if(plot){
-        plot(fdr.lim$pval,fdr.lim$qval, xlab="p-value",ylab="Fdr")
+        plot(fit$p.value[,2],fdr.lim$lfdr, xlab="p-value",ylab="Fdr")
         abline(h=fdr.thr)
       }
     }
     if(method.fdr=="BH"){
-      bh.pval<- p.adjust(fdr.lim$pval,method="BH")
+      bh.pval<- p.adjust(fit$p.value[,2],method="BH")
       names(bh.pval)<-featureNames(data)
       names.sig.spot<- names(bh.pval[bh.pval <fdr.thr])
       if(plot){
-        plot(fdr.lim$pval,bh.pval, xlab="p-value",ylab="Fdr")
+        plot(fit$p.value[,2],bh.pval, xlab="p-value",ylab="Fdr")
         abline(h=fdr.thr)
       }
     }
     if(method.fdr=="Storey"){
-      stor<- qvalue(fdr.lim$pval,pi0.method="bootstrap")
+      stor<- qvalue(fit$p.value[,2],pi0.method="bootstrap")
       names(stor$qvalues) <- featureNames(data)
       names.sig.spot<- names(stor$qvalues[stor$qvalues <fdr.thr])
       if(plot){
-        plot(fdr.lim$pval, stor$qvalues, xlab="p-value",ylab="Fdr")
+        plot(fit$p.value[,2], stor$qvalues, xlab="p-value",ylab="Fdr")
         abline(h=fdr.thr)
       }
     }
@@ -281,6 +282,9 @@ modT.Prot <-
                                   return(data[0])}
     else{
       a<- data[names.sig.spot]
+      r.2 <- apply(exprs(a[,pData(data)[,col]==levels(pData(data)[,col])[2]]),1,mean)
+      r.1 <- apply(exprs(a[,pData(data)[,col]==levels(pData(data)[,col])[1]]),1,mean)
+      fData(a)[,1] <- r.2 - r.1
       a2 <- a[abs(fData(a))>1]
       if(Fold2){
         if(length(exprs(a2))==0){cat("No significant spots founds")

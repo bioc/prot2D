@@ -15,7 +15,7 @@ These functions provides simple methods for finding differentially expressed pro
 \usage{
 ttest.Prot(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH", var.equal = F)
 
-modT.Prot(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH")
+modT.Prot(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH", col=1)
 
 samT.Prot(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH")
 
@@ -36,6 +36,7 @@ shrinkT.Prot(data, plot = T, fdr.thr = 0.1, Fold2 = F, method.fdr = "BH", var.eq
 }
  \item{var.equal}{logical. If false (default) assume unequal variances in each condition and uses a proper correction. Only for \code{ttest.Prot} and \code{shrinkT.Prot}.
  }
+   \item{col}{An integer (default to 1). Only for \code{modT.Prot}. If there is more than one factor in \code{\link{pData}}, indicates the column to use for the analysis}.
 }
 \details{
 As described in Artigaud et al (2013) these are functions adapted from microarray analysis. 2-DE experiments analysis requires a variant of the t-statistic that is suitable for high-dimensional data and large-scale multiple testing. For this purpose, in the last few years, various test procedures have been suggested.\cr
@@ -87,5 +88,5 @@ ES.diff <- modT.Prot(ES.p, fdr.thr=0.1, plot=TRUE)
 featureNames(ES.diff) # Names of the spots selected for a moderated t-test with a fdr of 0.1
 fData(ES.diff) # Displaying fold change (as log2(ratio)) for selected spots
 exprs(ES.diff) # Volume normalized data for all the selected spots
-\dontrun{heatplot(x)} #Great heatmap of the selected spots (require made4 Bioconductor package )}
+\dontrun{heatplot(ES.diff)} #Great heatmap of the selected spots (require made4 Bioconductor package )}
 \keyword{prot2D}

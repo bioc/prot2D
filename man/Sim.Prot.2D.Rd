@@ -46,7 +46,7 @@ returns an \code{\link{ExpressionSet}} of simulated volume data (log2 transforme
 \item{Artigaud, S., Gauthier, O. & Pichereau, V. (2013) "Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools." Bioinformatics, vol.29 (21): 2729-2734.}
 \item{Smyth, G.K. (2004) "Linear models and empirical bayes methods for assessing differential expression in microarray experiments." Statistical Applications in Genetics and Molecular Biology, vol. 3: Article 3.}
 }
-
+}
 \author{
 Sebastien Artigaud
 \email{sebastien.artigaud@gmx.com}

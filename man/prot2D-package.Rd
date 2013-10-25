@@ -25,6 +25,7 @@ Sebastien Artigaud
 \item{Dudoit, S., Yang, Y.H., Callow, M.J., & Speed, T.P. (2002) "Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments" Statistica Sinica, vol. 12: 111-139.}
 \item{Strimmer, K. (2008) "A unified approach to false discovery rate estimation." BMC Bioinformatics, vol. 9: 303.}
 }
+}
 \seealso{
 \code{\link{ExpressionSet}},
 \code{\link{fdrtool}}

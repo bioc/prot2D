@@ -66,7 +66,7 @@ returns an \code{\link{ExpressionSet}} containing only the significant spots (se
 \item{Opgen-Rhein, R. & Strimmer, K. (2007) "Accurate Ranking of Differentially Expressed
 Genes by a Distribution-Free Shrinkage Approach" Statistical Applications in Genetics and Molecular Biology, vol. 6 (1).}
 }
-
+}
 \author{
 Sebastien Artigaud
 \email{sebastien.artigaud@gmx.com}

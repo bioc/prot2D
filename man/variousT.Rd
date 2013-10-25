@@ -56,6 +56,7 @@ returns an \code{\link{ExpressionSet}} containing only the significant spots (se
 }
 \references{
 \itemize{
+\item{Artigaud, S., Gauthier, O. & Pichereau, V. (2013) "Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools." Bioinformatics, vol.29 (21): 2729-2734.}
 \item{Benjamini, Y. & Hochberg, Y. (1995) "Controlling the false discovery rate: a practical and powerful approach to multiple testing" Journal of the Royal Statistical Society. Series B. Methodological.: 289-300.}
 \item{Efron, B., Tibshirani, R., Storey, J.D., & Tusher, V. (2001) "Empirical Bayes Analysis of a Microarray Experiment" Journal of the American Statistical Association, vol. 96 (456): 1151-1160.}
 \item{Tusher, V.G., Tibshirani, R., & Chu, G. (2001) "Significance analysis of microarrays applied to the ionizing radiation response"" Proceedings of the National Academy of Sciences of the United States of America, vol. 98 (9): 5116-5121.}
@@ -64,8 +65,6 @@ returns an \code{\link{ExpressionSet}} containing only the significant spots (se
 \item{Strimmer, K. (2008) "A unified approach to false discovery rate estimation." BMC Bioinformatics, vol. 9: 303.}
 \item{Opgen-Rhein, R. & Strimmer, K. (2007) "Accurate Ranking of Differentially Expressed
 Genes by a Distribution-Free Shrinkage Approach" Statistical Applications in Genetics and Molecular Biology, vol. 6 (1).}
-\item{Artigaud, S., Gauthier, O. & Pichereau, V. (2013) "Identifying differentially expressed proteins in 2-DE experiments: Inputs from transcriptomics statistical tools." Submitted}
-}
 }
 
 \author{

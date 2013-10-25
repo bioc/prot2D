@@ -31,7 +31,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This document briefly describes how to use the \Rpackage{prot2D} package. An R package designed to analyze (i.e. Normalize and select significant spots) data issued from 2D SDS PAGE experiments. \Rpackage{prot2D} provides a simple interface for analysing data from 2D gel experiments. Functions for normalization as well as selecting significant spots are provided. Furthermore, a function to simulates realistic 2D Gel volume data is also provided.
+This document briefly describes how to use the \Rpackage{prot2D} package. An R package designed to analyze (i.e. Normalize and select significant spots) data issued from 2D SDS PAGE experiments. \Rpackage{prot2D} provides a simple interface for analysing data from 2D gel experiments. Functions for normalization as well as selecting significant spots are provided. Furthermore, a function to simulates realistic 2D Gel volume data is also provided.If you use this package please cite :
+\itemize{
+\item{Artigaud, S., Gauthier, O. \& Pichereau, V. (2013) "Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools." Bioinformatics, vol.29 (21): 2729-2734.}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Input data for \Rpackage{prot2D}}
@@ -192,7 +194,7 @@ sessionInfo()
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{References}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\indent Artigaud, S., Gauthier, O. \& Pichereau, V. (2013) "Identifying differentially expressed proteins in 2-DE experiments: Inputs from transcriptomics statistical tools." Submitted
+\indent Artigaud, S., Gauthier, O. \& Pichereau, V. (2013) "Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools." Bioinformatics, vol.29 (21): 2729-2734.
 \par
 Benjamini, Y. \& Hochberg, Y. (1995) "Controlling the false discovery rate: a practical and powerful approach to multiple testing" Journal of the Royal Statistical Society. Series B. Methodological.: 289-300.
 \par

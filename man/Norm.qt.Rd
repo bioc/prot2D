@@ -35,7 +35,7 @@ Sebastien Artigaud
 \email{sebastien.artigaud@gmx.com}
 }
 \references{
-Artigaud, S., Gauthier, O. & Pichereau, V. (2013) "Identifying differentially expressed proteins in 2-DE experiments: Inputs from transcriptomics statistical tools." Submitted
+Artigaud, S., Gauthier, O. & Pichereau, V. (2013) "Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools." Bioinformatics, vol.29 (21): 2729-2734.
 }
 \seealso{
 \code{\link{normalizeQuantiles}},\code{\link{RIplot}},\code{\link{ES.prot}}

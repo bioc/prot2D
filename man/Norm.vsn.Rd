@@ -36,8 +36,7 @@ Sebastien Artigaud
 }
 \references{
 \itemize{
-\item{
-Artigaud, S., Gauthier, O. & Pichereau, V. (2013) "Identifying differentially expressed proteins in 2-DE experiments: Inputs from transcriptomics statistical tools." Submitted}
+\item{Artigaud, S., Gauthier, O. & Pichereau, V. (2013) "Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools." Bioinformatics, vol.29 (21): 2729-2734.}
 \item{
 Huber, W., Heydebreck, von, A., Sultmann, H., Poustka, A., & Vingron, M. (2002) "Variance stabilization applied to microarray data calibration and to the quantification of differential expression" Bioinformatics, vol. 18 (Suppl 1): S96-S104.}
 }

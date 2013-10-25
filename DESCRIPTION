@@ -1,13 +1,8 @@
 Package: prot2D
 Type: Package
 Title: Statistical Tools for volume data from 2D Gel Electrophoresis
-<<<<<<< .mine
 Version: 1.1.1
 Date: 2013-10-25
-=======
-Version: 1.1.0
-Date: 2013-04-10
->>>>>>> .r82157
 Author: Sebastien Artigaud
 Maintainer: Sebastien Artigaud <sebastien.artigaud@gmx.com>
 Description: The purpose of this package is to analyze (i.e. Normalize and select significant spots) data issued from 2D GEl experiments

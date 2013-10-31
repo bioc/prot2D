@@ -1,0 +1,15 @@
+citHeader("To cite package prot2D in publications, please use:")
+citEntry(entry="Article", 
+author = "S. Artigaud and O. Gauthier and V. Pichereau",
+journal = "Bioinformatics",
+volume = "29",
+number="21",
+pages = "2729--2734",
+publisher = "Oxford Univ Press",
+title = "Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools",
+url = "http://bioinformatics.oxfordjournals.org/content/29/21/2729.short",
+volume = "29",
+year = "2013",
+  textVersion = paste(
+ "Artigaud, S., Gauthier, O. and Pichereau, V.","(2013)","Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools.", "Bioinformatics, 29, 2729-2734")
+)
